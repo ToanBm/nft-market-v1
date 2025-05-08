@@ -1,56 +1,90 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Contract, BrowserProvider, ethers } from "ethers";
+import { marketNftAbi } from "../abi/marketNftAbi";
 
-function ListNFT({ signer }) {
-  const [contractAddress, setContractAddress] = useState("");
-  const [tokenId, setTokenId] = useState("");
+function ListNFT({ selectedNFT, onClose, onList }) {
   const [price, setPrice] = useState("");
+  const [alreadyListed, setAlreadyListed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  async function handleList() {
-    if (!signer) {
-      alert("Please connect wallet first!");
-      return;
+  useEffect(() => {
+    async function checkListed() {
+      try {
+        const provider = new BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const contract = new Contract(selectedNFT.contract, marketNftAbi, signer);
+        const sale = await contract.salePrice(selectedNFT.tokenId);
+        if (sale > 0n) {
+          setAlreadyListed(true);
+          setPrice(ethers.formatEther(sale));
+        } else {
+          setAlreadyListed(false);
+          setPrice("");
+        }
+      } catch {
+        setAlreadyListed(false);
+      }
     }
 
-    if (!contractAddress || !tokenId || !price) {
-      alert("Please fill all fields!");
+    if (selectedNFT) checkListed();
+  }, [selectedNFT]);
+
+  async function handleSubmit() {
+    if (!price) {
+      alert("Please enter a price!");
       return;
     }
+    if (alreadyListed) {
+      alert("❗ NFT already listed");
+      return;
+    }
+    onList({ ...selectedNFT, price });
+    onClose();
+  }
 
+  async function handleCancelListing() {
     try {
-      // Gọi transaction list NFT lên marketplace
-      // const tx = await marketplaceContract.listItem(contractAddress, tokenId, parseEther(price));
-      // await tx.wait();
-      alert("NFT listed successfully!");
-    } catch (error) {
-      console.error("List failed:", error);
-      alert("List failed!");
+      setLoading(true);
+      const provider = new BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new Contract(selectedNFT.contract, marketNftAbi, signer);
+      const tx = await contract.cancelListing(selectedNFT.tokenId);
+      await tx.wait();
+      alert("✅ Listing cancelled");
+      onClose();
+    } catch (err) {
+      alert("❌ Cancel failed: " + (err?.info?.error?.message || err.message));
+    } finally {
+      setLoading(false);
     }
   }
 
+  if (!selectedNFT) return null;
+
   return (
-    <div className="card">
-      <h2>List NFT</h2>
-      <input
-        type="text"
-        placeholder="NFT Contract Address"
-        value={contractAddress}
-        onChange={(e) => setContractAddress(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Token ID"
-        value={tokenId}
-        onChange={(e) => setTokenId(e.target.value)}
-      />
-      <input
-        type="number"
-        placeholder="Price (in native token)"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      <button className="primary-button" onClick={handleList}>
-        List NFT
-      </button>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h2>List NFT for Sale</h2>
+        <img src={selectedNFT.image} alt={selectedNFT.name} className="nft-image" />
+        <p>{selectedNFT.name} #{selectedNFT.tokenId}</p>
+        <input
+          type="number"
+          placeholder="Price (in native token)"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          disabled={alreadyListed}
+        />
+        <div className="modal-actions">
+          {alreadyListed ? (
+            <button onClick={handleCancelListing} disabled={loading}>
+              {loading ? "Cancelling..." : "Cancel Listing"}
+            </button>
+          ) : (
+            <button onClick={handleSubmit}>List NFT</button>
+          )}
+          <button className="cancel-button" onClick={onClose}>Close</button>
+        </div>
+      </div>
     </div>
   );
 }

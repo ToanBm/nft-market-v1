@@ -242,3 +242,70 @@ body {
   justify-content: center;
   align-items: center;
 }
+/* ========== MODAL (List NFT) ========== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  background-color: #2c2c2c;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.modal-content h2 {
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 6px;
+  background-color: #444;
+  color: white;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.modal-actions button:first-child {
+  background-color: #ffcc00;
+  color: #1e1e1e;
+}
+
+.cancel-button {
+  background-color: #666;
+  color: white;
+}

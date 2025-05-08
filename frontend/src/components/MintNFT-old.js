@@ -3,21 +3,24 @@ import { ethers, BrowserProvider, Contract } from "ethers";
 import { nfts } from "../utils/nfts";
 
 function MintNFT() {
-  const [mintingIndex, setMintingIndex] = useState(null);
+  const [minting, setMinting] = useState(false);
 
-  async function handleMint(nft, index) {
+  async function handleMint(nft) {
     if (!window.ethereum) {
       alert("Please install MetaMask or OKX Wallet!");
       return;
     }
 
     try {
-      setMintingIndex(index);
+      setMinting(true);
       const provider = new BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new Contract(nft.contract, nft.abi, signer);
 
+      // Read mint price from contract
       const mintPrice = await contract.mintPrice();
+
+      // Call mint function with correct value
       const tx = await contract.mint({ value: mintPrice });
 
       await tx.wait();
@@ -26,7 +29,7 @@ function MintNFT() {
       console.error("Mint failed:", error);
       alert("Mint failed: " + (error?.info?.error?.message || error.message));
     } finally {
-      setMintingIndex(null);
+      setMinting(false);
     }
   }
 
@@ -34,8 +37,8 @@ function MintNFT() {
     <div>
       <h2 className="section-title">NFT Mint</h2>
       <div className="nft-grid">
-        {nfts.map((nft, index) => (
-          <div key={nft.name + index} className="nft-card">
+        {nfts.map((nft) => (
+          <div key={nft.name} className="nft-card">
             {nft.networkIcon && (
               <img
                 src={nft.networkIcon}
@@ -49,11 +52,11 @@ function MintNFT() {
 
             {nft.contract.startsWith("0x") && nft.contract.length === 42 ? (
               <button
-                onClick={() => handleMint(nft, index)}
+                onClick={() => handleMint(nft)}
                 className="mint-button"
-                disabled={mintingIndex !== null}
+                disabled={minting}
               >
-                {mintingIndex === index ? "Minting..." : "Mint"}
+                {minting ? "Minting..." : "Mint"}
               </button>
             ) : (
               <button className="mint-button-disabled" disabled>

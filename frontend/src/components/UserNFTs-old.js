@@ -4,6 +4,8 @@ import { nfts as nftList } from "../utils/nfts";
 
 function UserNFTs({ signer }) {
   const [nfts, setNfts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const nftsPerPage = 4;
 
   useEffect(() => {
     if (signer) loadAllNFTs();
@@ -25,41 +27,63 @@ function UserNFTs({ signer }) {
 
           try {
             const res = await fetch(tokenUri);
-            if (!res.ok) {
-              console.warn(`❌ Cannot fetch metadata from ${tokenUri} (${res.status})`);
-              continue;
-            }
-
+            if (!res.ok) continue;
             const metadata = await res.json();
+
             allNfts.push({
               id: tokenId.toString(),
               name: metadata.name || `${nft.name} #${tokenId}`,
               image: metadata.image || "",
               contract: nft.contract,
             });
-          } catch (jsonErr) {
-            console.warn(`❌ Invalid JSON at ${tokenUri}`, jsonErr);
+          } catch {
+            continue;
           }
         }
-      } catch (err) {
-        console.error(`Failed to load NFTs from ${nft.name}`, err);
+      } catch {
+        continue;
       }
     }
 
     setNfts(allNfts);
+    setCurrentPage(1);
   }
+
+  const startIndex = (currentPage - 1) * nftsPerPage;
+  const currentNfts = nfts.slice(startIndex, startIndex + nftsPerPage);
+  const totalPages = Math.ceil(nfts.length / nftsPerPage);
 
   return (
     <div className="user-nft-panel">
       <h3 className="section-title">Your NFTs</h3>
       <div className="nft-grid">
-        {nfts.map((nft) => (
-          <div key={`${nft.contract}-${nft.id}`} className="nft-card">
+        {currentNfts.map((nft) => (
+          <div key={`${nft.contract}-${nft.id}`} className="nft-card fade-in">
             <img src={nft.image} alt={nft.name} className="nft-image" />
             <div>{nft.name}</div>
           </div>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="pagination fixed-bottom">
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+          >
+            ⬅ Prev
+          </button>
+          <span>
+            Page {currentPage} / {totalPages}
+          </span>
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+          >
+            Next ➡
+          </button>
+        </div>
+      )}
     </div>
   );
 }
