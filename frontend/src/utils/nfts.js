@@ -28,5 +28,5 @@ export const nfts = [
     minted: 5, // tạm hardcode, sau có thể lấy từ contract
     mintStart: "2025-05-08T02:00:00Z", // UTC
     mintEnd: "2025-05-15T02:00:00Z"
-  },
+  }
 ];

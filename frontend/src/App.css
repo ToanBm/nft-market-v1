@@ -188,6 +188,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -202,20 +203,35 @@ body {
   box-sizing: border-box;
 }
 
+/* ---- Network Panel------ */
 .network-panel {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
+  flex: 0 0 20%;
   gap: 10px;
 }
 
-/* New row to align wallet + network horizontally */
+.user-nft-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex: 0 0 69%;
+}
+
+.footer-panel {
+  flex: 0 0 7%;
+  font-size: 12px;
+  text-align: center;
+  color: #aaa;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
 .network-row {
   display: flex;
   gap: 10px;
 }
 
-/* Adjust button and selector to fit half */
 .wallet-button,
 .network-selector {
   flex: 1;
@@ -238,7 +254,6 @@ body {
   border: 1px solid #333;
 }
 
-/* Keep original faucet button full width */
 .faucet-button {
   width: 100%;
   padding: 10px;
@@ -269,26 +284,46 @@ body {
   color: #ccc;
 }
 
-
-.user-nft-panel {
-  flex: 7;
-  overflow-y: auto;
+/* ---- User Panel------ */
+.user-nft-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
-.user-nft-panel h3 {
+.nft-card {
+  background-color: #3a3a3a;
+  border-radius: 8px;
+  padding: 10px;
   text-align: center;
-  margin-bottom: 10px;
+  font-size: 14px;
 }
 
-.footer-panel {
-  flex: 1;
-  font-size: 12px;
-  text-align: center;
-  color: #aaa;
-  justify-content: center;
-  align-items: center;
+.nft-card.empty-slot {
+  visibility: hidden;
 }
-/* ========== MODAL (List NFT) ========== */
+
+.nft-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.pagination.fixed-bottom {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.pagination.fixed-bottom > * {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+/* ---- Popup List NFT------ */
 .modal-overlay {
   position: fixed;
   top: 0;

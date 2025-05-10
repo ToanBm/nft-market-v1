@@ -65,7 +65,7 @@ function UserNFTs({ signer }) {
   return (
     <div className="user-nft-panel">
       <h3 className="section-title">Your NFTs</h3>
-      <div className="nft-grid">
+      <div className="user-nft-grid">
         {currentNfts.map((nft) => (
           <div
             key={`${nft.contract}-${nft.id}`}
