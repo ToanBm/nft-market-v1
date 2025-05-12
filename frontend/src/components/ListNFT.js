@@ -38,8 +38,34 @@ function ListNFT({ selectedNFT, onClose, onList }) {
       alert("❗ NFT already listed");
       return;
     }
-    onList({ ...selectedNFT, price });
-    onClose();
+
+    try {
+      setLoading(true);
+      const provider = new BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const user = await signer.getAddress();
+      const contract = new Contract(selectedNFT.contract, marketNftAbi, signer);
+
+      const isApproved = await contract.isApprovedForAll(user, selectedNFT.contract);
+      if (!isApproved) {
+        const approveTx = await contract.setApprovalForAll(selectedNFT.contract, true);
+        await approveTx.wait();
+      }
+
+      const tx = await contract.listForSale(
+        selectedNFT.tokenId,
+        ethers.parseEther(price)
+      );
+      await tx.wait();
+
+      alert(`✅ NFT ${selectedNFT.name} listed at ${price}`);
+      onList({ ...selectedNFT, price });
+      onClose();
+    } catch (err) {
+      alert("❌ List failed: " + (err?.info?.error?.message || err.message));
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleCancelListing() {
@@ -80,7 +106,9 @@ function ListNFT({ selectedNFT, onClose, onList }) {
               {loading ? "Cancelling..." : "Cancel Listing"}
             </button>
           ) : (
-            <button onClick={handleSubmit}>List NFT</button>
+            <button onClick={handleSubmit} disabled={loading}>
+              {loading ? "Listing..." : "List NFT"}
+            </button>
           )}
           <button className="cancel-button" onClick={onClose}>Close</button>
         </div>

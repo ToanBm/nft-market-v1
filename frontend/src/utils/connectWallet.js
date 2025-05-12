@@ -1,6 +1,6 @@
 import { BrowserProvider } from "ethers";
 
-// Kết nối mới (yêu cầu xác nhận ví)
+// ✅ Kết nối ví, chỉ yêu cầu nếu chưa có tài khoản kết nối
 export async function connectWallet() {
   if (!window.ethereum) {
     alert("Please install MetaMask or OKX Wallet!");
@@ -8,7 +8,13 @@ export async function connectWallet() {
   }
 
   try {
-    await window.ethereum.request({ method: "eth_requestAccounts" });
+    // Kiểm tra nếu đã từng kết nối, không gọi eth_requestAccounts nữa
+    const accounts = await window.ethereum.request({ method: "eth_accounts" });
+    if (accounts.length === 0) {
+      // Chỉ gọi yêu cầu nếu chưa có kết nối
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+    }
+
     const provider = new BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const network = await provider.getNetwork();
@@ -16,16 +22,17 @@ export async function connectWallet() {
     return {
       provider,
       signer,
+      address: await signer.getAddress(),
       chainId: Number(network.chainId),
     };
   } catch (error) {
     console.error("connectWallet error:", error);
-    alert("Failed to connect wallet!");
+    alert("❌ Wallet connection failed. Please unlock your wallet and try again.");
     return null;
   }
 }
 
-// ✅ Hàm reconnect không hiện popup
+// ✅ Lấy lại ví đã kết nối (không hiện popup)
 export async function getExistingWallet() {
   if (!window.ethereum) return null;
 
@@ -39,10 +46,12 @@ export async function getExistingWallet() {
   return {
     provider,
     signer,
+    address: await signer.getAddress(),
     chainId: Number(network.chainId),
   };
 }
 
+// ✅ Chuyển network nếu chưa đúng (ví dụ từ Ethereum sang Monad testnet)
 export async function switchNetwork(chainInfo) {
   try {
     await window.ethereum.request({
@@ -61,6 +70,7 @@ export async function switchNetwork(chainInfo) {
   }
 }
 
+// ❌ Không cần ngắt ví thật, chỉ xoá local info
 export function disconnectWallet() {
-  console.log("Disconnected frontend only");
+  console.log("🔌 Disconnected frontend only");
 }

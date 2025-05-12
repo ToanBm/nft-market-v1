@@ -9,7 +9,7 @@ import { CHAINS } from "./utils/chains";
 import MintNFT from "./components/MintNFT";
 import UserPanel from "./components/UserPanel";
 import ListNFT from "./components/ListNFT";
-import ListedNFTs from "./components/ListedNFTs";
+import ListedCollections from "./components/ListedCollections";
 import { marketNftAbi } from "./abi/marketNftAbi";
 import { ethers, Contract, BrowserProvider } from "ethers";
 import "./App.css";
@@ -121,7 +121,7 @@ function App() {
       </div>
 
       <div className="center-panel">
-        <ListedNFTs />
+        <ListedCollections />
       </div>
 
       <div className="right-panel">
