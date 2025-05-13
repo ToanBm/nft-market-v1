@@ -18,7 +18,7 @@ body {
 
 /* ===================== LEFT PANEL ===================== */
 .left-panel {
-  width: 30%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -28,9 +28,15 @@ body {
   padding: 10px;
 }
 
+.nft-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .nft-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(6, 1fr);
   gap: 12px;
   width: 100%;
   box-sizing: border-box;
@@ -47,15 +53,12 @@ body {
   text-align: center;
   font-size: 14px;
   overflow: hidden;
+  transition: box-shadow 0.3s;
 }
 
-.nft-name {
-  font-weight: bold;
-  font-size: 15px;
-  margin-top: 0; /* giảm khoảng cách trên dưới */
-  color: white;
+.nft-card:hover {
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
-
 
 .nft-image {
   width: 100%;
@@ -65,25 +68,32 @@ body {
   margin-bottom: 6px;
 }
 
+.nft-name {
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 0;
+  color: white;
+}
+
 .network-icon {
   position: absolute;
   top: 15px;
   right: 15px;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   background: none;
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
   z-index: 2;
 }
 
-/* ===== NFT Drops Title ===== */
+/* ===== Section Titles ===== */
 .section-title {
   margin-top: 0;
   margin-bottom: 10px;
   font-size: 22px;
   font-weight: bold;
+  color: white;
 }
-
 
 /* ===== Tab Chains ===== */
 .chain-tabs {
@@ -114,7 +124,7 @@ body {
   color: #999;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  width: 100%;      /* chiếm toàn bộ chiều rộng ảnh */
+  width: 100%;
   margin: 4px 0;
 }
 
@@ -125,6 +135,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
   margin-bottom: 6px;
+  color: white;
 }
 
 /* ===== Countdown ===== */
@@ -135,7 +146,7 @@ body {
   z-index: 1;
 }
 
-/* ===== Mint Button (Overlay) ===== */
+/* ===== Mint Overlay ===== */
 .nft-mint-overlay {
   position: absolute;
   bottom: 12px;
@@ -150,6 +161,7 @@ body {
   display: block;
 }
 
+/* ===== Mint & Buy Buttons ===== */
 .mint-button {
   width: 100%;
   padding: 8px;
@@ -160,78 +172,25 @@ body {
   border: none;
   color: #1e1e1e;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-/* ===================== CENTER PANEL ===================== */
-.center-panel {
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: #2c2c2c;
-  border-radius: 12px;
-  box-sizing: border-box;
-  padding: 12px;
+.mint-button:hover {
+  transform: scale(1.03);
 }
 
-/* NFT Grid (6 cột) */
-.marketplace-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  width: 100%;
-}
-
-/* NFT Card */
-.marketplace-card {
-  background-color: #3a3a3a;
-  border-radius: 8px;
-  padding: 8px;
+/* ===== Footer Panel Adjustments ===== */
+.footer-panel {
+  margin-top: auto;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-
-/* NFT Image */
-.marketplace-image {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 6px;
-}
-
-/* Info block */
-.marketplace-info {
+  color: #888;
   font-size: 13px;
-  color: #ccc;
-  line-height: 1.4;
+  padding: 12px 6px 6px 6px;
 }
 
-.marketplace-price,
-.marketplace-id,
-.marketplace-status {
-  font-weight: bold;
-  color: white;
-  margin: 2px 0;
-}
 
-/* Buy button */
-.marketplace-buy-button {
-  margin-top: 8px;
-  background-color: #ffcc00;
-  color: #1e1e1e;
-  font-weight: bold;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  border: none;
-}
 
-/* ===================== RIGHT PANEL ===================== */
+/* ===================== RIGHT PANEL ====================================== */
 .right-panel {
   width: 20%;
   display: flex;
@@ -263,11 +222,11 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  flex: 0 0 69%;
+  flex: 0 0 55%;
 }
 
 .footer-panel {
-  flex: 0 0 7%;
+  flex: 0 0 23%;
   font-size: 12px;
   text-align: center;
   color: #aaa;

@@ -6,10 +6,9 @@ import {
   switchNetwork
 } from "./utils/connectWallet";
 import { CHAINS } from "./utils/chains";
-import MintNFT from "./components/MintNFT";
+import MarketPanel from "./components/MarketPanel";
 import UserPanel from "./components/UserPanel";
 import ListNFT from "./components/ListNFT";
-import ListedCollections from "./components/ListedCollections";
 import { marketNftAbi } from "./abi/marketNftAbi";
 import { ethers, Contract, BrowserProvider } from "ethers";
 import "./App.css";
@@ -116,12 +115,9 @@ function App() {
 
   return (
     <div className="container">
-      <div className="left-panel">
-        <MintNFT signer={signer} />
-      </div>
 
-      <div className="center-panel">
-        <ListedCollections />
+      <div className="left-panel">
+        <MarketPanel signer={signer} />
       </div>
 
       <div className="right-panel">
@@ -155,7 +151,6 @@ function App() {
           )}
           <button className="faucet-button">Faucet</button>
         </div>
-
         {signer && <UserPanel signer={signer} onSelect={setSelectedNFT} />}
         <div className="footer-panel">© 2025 ToanBm NFT Market</div>
       </div>

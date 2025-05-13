@@ -1,0 +1,215 @@
+/* ===================== MintPopup.css ===================== */
+
+/* Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Container with fixed size */
+.popup-box {
+  display: flex;
+  background: none;
+  padding: 0;
+  gap: 10px;
+}
+
+.popup-left {
+  width: 500px;
+  height: 500px;
+  background: transparent;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.popup-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.popup-image:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); /* giống với .nft-card:hover */
+}
+
+.popup-right {
+  width: 300px;
+  height: 500px;
+  background: #1f1f1f;
+  border-radius: 12px;
+  padding: 5px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  font-family: sans-serif;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+/* ===================== Header ===================== */
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-transform: none;
+}
+
+.popup-network-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===================== 1. Status & Progress ===================== */
+.popup-status-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #ccc;
+  margin-bottom: 4px;
+}
+
+.popup-progress-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.popup-progress-bar {
+  width: 100%;
+  height: 6px;
+  border-radius: 6px;
+  background: #333;
+  margin-bottom: 12px;
+}
+
+.popup-progress-bar-inner {
+  height: 100%;
+  background: #ff2fd0;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.popup-percent {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+
+/* ===================== 2. Price, Quantity, Mint Fee ===================== */
+.popup-price-quantity-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 200px;   /* 👈 tăng số lớn hơn, ví dụ 20–24px */
+  margin-bottom: 8px;
+}
+
+.popup-price-label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.popup-price-label {
+  font-size: 13px;
+  color: #aaa;
+}
+.popup-price-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.popup-amount-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 👈 Phần số và +,- */
+.popup-amount-row button {
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 6px;
+  background: #444;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.popup-amount-row input {
+  width: 40px;
+  height: 35px;
+  border: none;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  -moz-appearance: textfield;
+}
+
+.popup-amount-row input::-webkit-outer-spin-button,
+.popup-amount-row input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+.popup-mint-fee-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 24px;
+}
+
+.popup-note {
+  display: none;
+}
+
+
+/* ===================== 4. Button ===================== */
+.popup-action button {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  background: #ffcc00;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.popup-action {
+  margin-top: auto;
+  padding-bottom: 5px; /* 👈 cách đáy đúng 5px */
+}
+
+.popup-action button:hover:not(:disabled) {
+  background: #ffe84b;
+}
+
+.popup-action button:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
